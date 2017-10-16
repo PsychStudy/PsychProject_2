@@ -3,11 +3,11 @@ var game = new Phaser.Game(1280, 720, Phaser.AUTO, '', { preload: preload, creat
 var s1 = [
   "Instructions:",
   "You will be generated a number between 0 and 100, with 0 being unlucky,",
-  "50 being average, and 100 being lucky.",
-  "To win, you must choose to keep your number, or re-roll for the chance",
-  "of a higher number.",
-  "Your number will be compared to another random number; If your number is higher,",
-  "then you win. Your luck will be calculated at the end.",
+  "50 being average, and 100 being very lucky.",
+  "Once your number is generated, you can keep your original number, or re-roll",
+  "for the chance to get a higher number.",
+  "The goal of the game is to get as high a number as possible.",
+  "Your luck will be calculated at the end.",
   " ",
   "Good Luck!"
 ];
@@ -39,13 +39,10 @@ var choice = 0;
 var choice1Text;
 var choice2Text;
 
-var winText;
 var luckText;
 var continueButton;
 var contText;
 var endPic;
-var replayButton;
-var replayText;
 
 function preload() {
 
@@ -89,17 +86,13 @@ function create() {
   continueButton.anchor.set(0.5);
   continueButton.visible = false;
 
-  replayButton = game.add.button(game.world.centerX, game.world.centerY + 260, 'button', resetInts, this, 1, 1, 1, 1);
-  replayButton.anchor.set(0.5);
-  replayText = game.add.text(game.world.centerX, game.world.centerY + 250, "Replay", {font: "30px Ariel", fill: "#000000"});
-  replayText.anchor.set(0.5);
-  replayButton.visible = false;
-  replayText.visible = false;
-
-  choice1Text = game.add.text(100, 10, "You chose to hold:", {font: "30px Ariel", fill: "#000000"});
+  choice1Text = game.add.text(100, 40, "You chose to hold:", {font: "25px Ariel", fill: "#000000"});
   choice1Text.visible = false;
-  choice2Text = game.add.text(100, 10, "You chose to roll again:", {font: "30px Ariel", fill: "#000000"});
+  choice2Text = game.add.text(100, 40, "You chose to roll again:", {font: "25px Ariel", fill: "#000000"});
   choice2Text.visible = false;
+
+  pNum = game.add.text(game.world.centerX, game.world.centerY - 300, 'Your Number', {font: "60px Ariel", fill: "#000000"});
+  pNum.visible = false;
 
 }
 
@@ -114,7 +107,7 @@ function update() {
 
   //Get Stage 1 Number
   if(stage1 === 2 && stage1Check === 1){
-        pNum = game.add.text(game.world.centerX, game.world.centerY - 300, 'Your Number', {font: "60px Ariel", fill: "#000000"});
+        pNum.visible = true;
         pNum.anchor.set(0.5);
         pNumInt = game.add.text(game.world.centerX, game.world.centerY - 230, stage1Int, {font: "110px Ariel", fill: "#000000"});
         pNumInt.anchor.set(0.5);
@@ -131,22 +124,26 @@ function update() {
       rollButton.visible = false;
       keepText.visible = false;
       rollText.visible = false;
-
       if(choice === 1){
         choice1Text.visible = true;
       }else if(choice === 2){
         choice2Text.visible = true;
       }
+      continueButton.visible = true;
+      contText = game.add.text(game.world.centerX, game.world.centerY + 250, "Continue", {font: "30px Ariel", fill: "#000000"});
+      contText.anchor.set(0.5);
+      stage2 = 2;
+
 
       newIntText = game.add.text(game.world.centerX, game.world.centerY - 30, "New Number", {font: "60px Ariel", fill: "#000000"});
       newIntText.anchor.set(0.5);
       newIntText2 = game.add.text(game.world.centerX, game.world.centerY + 40, stage2Int, {font: "110px Ariel", fill: "#000000"});
       newIntText2.anchor.set(0.5);
-      continueButton.visible = true;
-      contText = game.add.text(game.world.centerX, game.world.centerY + 250, "Continue", {font: "30px Ariel", fill: "#000000"});
-      contText.anchor.set(0.5);
+      if(choice === 1){
+        newIntText.visible = false;
+        newIntText2.visible = false;
+     }
 
-      stage2 = 2;
   }
 
 
@@ -189,10 +186,7 @@ function hideIntro(){
 
   function hold(){
     choice = 1;
-    stage2Int = game.rnd.integerInRange(95, 99);
-    while(stage2Int > stage1Int || stage2Int === stage1Int){
-      stage2Int = game.rnd.integerInRange(50, 98);
-    }
+
     stage2 = 1;
     stage2Check = 2;
   }
@@ -203,6 +197,7 @@ function hideIntro(){
     while(stage2Int < stage1Int || stage2Int === stage1Int){
       stage2Int = game.rnd.integerInRange(stage1Int, 99);
     }
+    pNum.setText("Your Original Number");
     stage2 = 1;
     stage2Check = 2;
   }
@@ -217,19 +212,14 @@ function hideIntro(){
     choice1Text.visible = false;
     choice2Text.visible = false;
 
-    winText = game.add.text(game.world.centerX , game.world.centerY - 300, "You Win!", {font: "80px Ariel", fill: "#000000"});
-    winText.anchor.set(0.5);
-    luckText = game.add.text(game.world.centerX, game.world.centerY - 150, "Your are Very Lucky", {font: "60px Ariel", fill: "#000000"});
+
+    luckText = game.add.text(game.world.centerX, game.world.centerY - 150, "You are Very Lucky", {font: "60px Ariel", fill: "#000000"});
     luckText.anchor.set(0.5);
     endPic = game.add.sprite(game.world.centerX, game.world.centerY + 30, 'hat');
     endPic.anchor.set(0.5);
-
-    replayButton.visible = true;
-    replayText.visible = true;
   }
 
   function resetInts(){
-    winText.visible = false;
     luckText.visible = false;
     endPic.visible = false;
     replayText.visible = false;
