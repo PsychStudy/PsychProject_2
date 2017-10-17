@@ -2,10 +2,10 @@ var game = new Phaser.Game(1280, 720, Phaser.AUTO, '', { preload: preload, creat
 
 var s1 = [
   "Instructions:",
-  "You will be generated a number between 0 and 100, with 0 being unlucky,",
+  "You will be randomly generated a number between 0 and 100, with 0 being unlucky,",
   "50 being average, and 100 being very lucky.",
   "Once your number is generated, you can keep your original number, or re-roll",
-  "for the chance to get a higher number.",
+  "for the chance to get a higher number. You only have the chance to re-roll once.",
   "The goal of the game is to get as high a number as possible.",
   "Your luck will be calculated at the end.",
   " ",
